@@ -49,13 +49,13 @@ function App() {
         projects={arr}
         openProject={openProject}
       />
-      (
+
       <ProjectDetails
         myArr={myArr}
         deleteProject={deleteProject}
         showDetails={showDetails}
       />
-      )
+
       {isClicked && !showDetails && (
         <NewProject ref={resetform} submit={submitHandler} sendData={getDate} />
       )}
