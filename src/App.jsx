@@ -23,22 +23,30 @@ function App() {
   }
   function submitHandler(event) {
     event.preventDefault();
+
     setArr((prv) => {
       return [...prv, myobj];
     });
     resetform.current.resetForm();
     setIsClicked(false);
   }
-  function openProject(index) {
+
+  function cancel() {
+    setIsClicked(false);
+  }
+  function openProject(id) {
     setShowDetails(true);
     setIsClicked(false);
-    setData(arr[index]);
+
+    let arrayToShow = arr.filter((proj) => proj.id === id);
+    setData(...arrayToShow);
   }
 
   function deleteProject() {
-    setArr(arr.filter((e) => e.title != myArr.title));
+    let projectTODelete = arr.filter((e) => e.id != myArr.id);
+    setArr(projectTODelete);
     if (arr[0].title) {
-      setShowDetails(false);
+      setShowDetails(null);
     }
   }
 
@@ -50,14 +58,21 @@ function App() {
         openProject={openProject}
       />
 
-      <ProjectDetails
-        myArr={myArr}
-        deleteProject={deleteProject}
-        showDetails={showDetails}
-      />
+      {(!null || showDetails) && (
+        <ProjectDetails
+          myArr={myArr}
+          deleteProject={deleteProject}
+          showDetails={showDetails}
+        />
+      )}
 
       {isClicked && !showDetails && (
-        <NewProject ref={resetform} submit={submitHandler} sendData={getDate} />
+        <NewProject
+          ref={resetform}
+          cancel={cancel}
+          submit={submitHandler}
+          sendData={getDate}
+        />
       )}
       {!showDetails && !isClicked && <DefaultPage clickHandler={newProject} />}
     </div>

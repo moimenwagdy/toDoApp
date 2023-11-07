@@ -1,19 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 let arr;
 
 export default function ProjectDetails({ myArr, deleteProject, showDetails }) {
+  let [inputVal, setINputVal] = useState();
   let { title, date, description } = myArr;
-
+  let formRef = useRef();
+  let modefiedDate = new Date(date).toLocaleDateString("en-us", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
   let [taskArry, setTaskArray] = useState([]);
 
   let [del, setDel] = useState(false);
+  function changeHandler(e) {
+    setINputVal(e.target.value);
+  }
 
-  let taskTitle = useRef();
-
-  function deleteTask(index) {
+  function deleteTask(index, identifier) {
     setDel((prv) => !prv);
     taskArry.forEach((task, i) => {
-      i === index && task.key === title && taskArry.splice(i, 1);
+      identifier === task.iden && taskArry.splice(i, 1);
     });
   }
 
@@ -21,8 +28,13 @@ export default function ProjectDetails({ myArr, deleteProject, showDetails }) {
     event.preventDefault();
     setTaskArray((prv) => [
       ...prv,
-      { key: title, value: taskTitle.current.value },
+      {
+        key: title,
+        value: inputVal,
+        iden: Math.random().toFixed(3),
+      },
     ]);
+    formRef.current.value = "";
   }
 
   return (
@@ -36,7 +48,7 @@ export default function ProjectDetails({ myArr, deleteProject, showDetails }) {
           <div className="flex flex-row justify-between items-center ">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold">{title}</h2>
-              <p className="text-black/40 mb-4"> {date}</p>
+              <p className="text-black/40 mb-4"> {modefiedDate}</p>
             </div>
             <button onClick={deleteProject} className="text-black/70">
               Delete
@@ -49,7 +61,8 @@ export default function ProjectDetails({ myArr, deleteProject, showDetails }) {
           <h2 className="text-2xl font-bold">Tasks</h2>
           <form className="space-y-6" onSubmit={taskHandler}>
             <input
-              ref={taskTitle}
+              ref={formRef}
+              onChange={changeHandler}
               type="text"
               className="bg-gray-200 me-4 ps-2 py-2 focus-visible:outline-cyan-600"
               id="tasks"
@@ -70,7 +83,9 @@ export default function ProjectDetails({ myArr, deleteProject, showDetails }) {
                   key={Math.random()}
                   className="w-full flex justify-between items-center py-2 bg-gray-200">
                   <h4 className="ps-6">{task.value}</h4>
-                  <button onClick={() => deleteTask(i)} className="pe-6">
+                  <button
+                    onClick={() => deleteTask(i, task.iden)}
+                    className="pe-6">
                     Clear
                   </button>
                 </div>

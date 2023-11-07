@@ -14,8 +14,8 @@ export default function YourProjects({ clickHandler, projects, openProject }) {
             {projects.map((project, index) => {
               return (
                 <button
-                  onClick={() => openProject(index)}
-                  key={project.date}
+                  onClick={() => openProject(project.id)}
+                  key={project.id}
                   className="text-lg ms-4 mt-2 bg-black font-bold px-4 w-[90%] py-2 text-start text-white/80  hover:bg-gray-900">
                   {project.title}
                 </button>
