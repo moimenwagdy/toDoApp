@@ -1,5 +1,5 @@
-import DefaultPage from "./components/defaultPage/defaultPage";
-import { useEffect, useRef, useState } from "react";
+import DefaultPage from "./components/defaultPage";
+import { useRef, useState } from "react";
 import NewProject from "./components/newProject/NewProject";
 import YourProjects from "./components/yourProjects/yourProjects";
 import ProjectDetails from "./components/projectDetails/projectDetail";
@@ -49,13 +49,13 @@ function App() {
         projects={arr}
         openProject={openProject}
       />
-
+      (
       <ProjectDetails
         myArr={myArr}
         deleteProject={deleteProject}
         showDetails={showDetails}
       />
-
+      )
       {isClicked && !showDetails && (
         <NewProject ref={resetform} submit={submitHandler} sendData={getDate} />
       )}
